@@ -27,10 +27,10 @@ const levelFormat = {
   },
   avatarSize: { width: 80, height: 160 },
   fps: 40,
-  jumpForce: 20,
+  jumpForce: 400,
   maxHorizontalSpeed: 200, // px/s
   horizontalAcceleration: 300, // px/s
-  gravityForce: 1,
+  gravityForce: 10,
   gameSpeed: 20,
 }
 

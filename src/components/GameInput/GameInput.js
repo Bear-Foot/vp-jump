@@ -23,7 +23,9 @@ class GameInputComponent extends Component {
     const word = keyMaps[key]
     const movement = this.props[`gameKeyDown${word}`]
     if (!this[word] && movement) {
-      this[word] = true
+      if (word !== 'Space') {
+        this[word] = true
+      }
       movement()
     }
   }
