@@ -1,14 +1,17 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 
 import { game } from './game/reducer'
 import { gamePath } from './selectors'
 
-import { gameInit } from './game/actions'
+import { gameStart } from './game/actions'
 
-export const store = createStore(combineReducers({
-  [gamePath]: game,
-}))
-
+export const store = createStore(
+  combineReducers({
+    [gamePath]: game,
+  }),
+  applyMiddleware(thunk),
+)
 
 // x, y position for blocks start at the bottom left corner
 const levelFormat = {
@@ -25,9 +28,10 @@ const levelFormat = {
   avatarSize: { width: 80, height: 160 },
   fps: 40,
   jumpForce: 20,
-  horizontalSpeed: 200, // px/s
+  maxHorizontalSpeed: 200, // px/s
+  horizontalAcceleration: 300, // px/s
   gravityForce: 1,
   gameSpeed: 20,
 }
 
-store.dispatch(gameInit(levelFormat))
+store.dispatch(gameStart(levelFormat))
