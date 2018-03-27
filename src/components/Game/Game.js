@@ -9,6 +9,7 @@ export const GameComponent = ({ position, level }) => {
   return (
     <WrappingBox style={level.wrappingBox}>
       <Avatar dim={level.avatarSize} style={pos} />
+      {level.blocks.map(block => <Block block={block} />)}
     </WrappingBox>
   )
 }
@@ -28,5 +29,14 @@ const Avatar = styled.div`
   background: yellow;
   width: ${p => p.dim.width}px;
   height: ${p => p.dim.height}px;
+`
+
+const Block = styled.div`
+  position: absolute;
+  background: palevioletred;
+  bottom: ${p => p.block.y}px;
+  left: ${p => p.block.x}px;
+  width: ${p => p.block.width}px;
+  height: ${p => p.block.height}px;
 `
 

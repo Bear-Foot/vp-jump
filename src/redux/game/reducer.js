@@ -1,4 +1,5 @@
 import { createReducer } from '../../utils/createReducer'
+import { detectCollision } from '../../utils/detectCollision'
 
 import {
   GAME_INIT,
@@ -28,7 +29,7 @@ const actionHandlers = {
   [GAME_KEY_UP_RIGHT]: state => ({
     ...state, goingRight: false,
   }),
-  [GAME_KEY_DOWN_SPACE]: state => console.log(state) || ({
+  [GAME_KEY_DOWN_SPACE]: state => ({
     ...state,
     ySpeed: (state.ySpeed === 0 ? state.level.jumpForce : state.ySpeed),
   }),
@@ -66,8 +67,15 @@ const actionHandlers = {
 
     // Y ySpeed
     let { ySpeed } = state
-    ySpeed -= level.gravityForce
+    ySpeed -= level.gravityForce * diff
     newPosition.y += (ySpeed * diff)
+
+    // blocks collisions
+    level.blocks.forEach((block) => {
+      if (detectCollision(block, { ...level.avatarSize, ...newPosition })) {
+        console.log('test')
+      }
+    })
 
     // borderCollisions
     if (newPosition.y < 0) {
@@ -76,6 +84,15 @@ const actionHandlers = {
     }
     if (newPosition.y > level.wrappingBox.height - level.avatarSize.height) {
       newPosition.y = level.wrappingBox.height - level.avatarSize.height
+      ySpeed = 0
+    }
+    if (newPosition.x < 0) {
+      newPosition.x = 0
+      xSpeed = 0
+    }
+    if (newPosition.x > level.wrappingBox.width - level.avatarSize.width) {
+      newPosition.x = level.wrappingBox.width - level.avatarSize.width
+      xSpeed = 0
     }
 
     return {

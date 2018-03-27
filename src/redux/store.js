@@ -18,7 +18,7 @@ const levelFormat = {
   startPosition: { x: 0, y: 0 },
   wrappingBox: { width: 800, height: 600 },
   blocks: [{
-    width: 100, height: 100, x: 200, y: 300,
+    width: 100, height: 100, x: 200, y: 200,
   }],
   finishPoint: {
     radius: 20,
@@ -27,10 +27,10 @@ const levelFormat = {
   },
   avatarSize: { width: 80, height: 160 },
   fps: 40,
-  jumpForce: 400,
-  maxHorizontalSpeed: 200, // px/s
-  horizontalAcceleration: 300, // px/s
-  gravityForce: 10,
+  jumpForce: 1000,
+  maxxSpeed: 400, // px/s
+  horizontalAcceleration: 600, // px/s
+  gravityForce: 1500,
   gameSpeed: 20,
 }
 

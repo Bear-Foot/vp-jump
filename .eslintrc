@@ -10,6 +10,7 @@
     "import/prefer-default-export": 0,
     "react/prop-types": 0,
     "babel/semi": 0,
+    "linebreak-style": 0, // Windows
     "semi": ["error", "never"]
   }
 }
