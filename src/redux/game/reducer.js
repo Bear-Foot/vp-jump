@@ -38,9 +38,22 @@ const actionHandlers = {
     const now = Date.now()
     const { level } = state
     const diff = ((now - state.lastUpdate) / 1000)
+    let { xSpeed, ySpeed } = state
+
+    // blocks collisions
+    level.blocks.forEach((block) => {
+      const collision = detectCollision(block, {
+        ...level.avatarSize, ...newPosition, vx: xSpeed, vy: ySpeed,
+      }, dx, dy)
+      if (collision) {
+        newPosition.y = collision.y
+        newPosition.x = collision.x
+        ySpeed = collision.vy
+        xSpeed = collision.vx
+      }
+    })
 
     // X management
-    let { xSpeed } = state
     const acceleration = level.horizontalAcceleration * diff
     if (state.goingLeft) {
       xSpeed -= acceleration
@@ -63,19 +76,38 @@ const actionHandlers = {
       (xSpeed / Math.abs(xSpeed)) * level.maxxSpeed :
       xSpeed
 
-    newPosition.x += (xSpeed * diff)
-
-    // Y ySpeed
-    let { ySpeed } = state
-    ySpeed -= level.gravityForce * diff
-    newPosition.y += (ySpeed * diff)
-
+    const dx = xSpeed * diff
+    newPosition.x += dx
     // blocks collisions
     level.blocks.forEach((block) => {
-      if (detectCollision(block, { ...level.avatarSize, ...newPosition })) {
-        console.log('test')
+      const collision = detectCollision(block, {
+        ...level.avatarSize, ...newPosition, vx: xSpeed, vy: ySpeed,
+      }, dx, 0)
+      if (collision) {
+        newPosition.y = collision.y
+        newPosition.x = collision.x
+        ySpeed = collision.vy
+        xSpeed = collision.vx
       }
     })
+
+    // Y ySpeed
+    ySpeed += level.gravityForce * diff
+    const dy = ySpeed * diff
+    newPosition.y += dy
+    // blocks collisions
+    level.blocks.forEach((block) => {
+      const collision = detectCollision(block, {
+        ...level.avatarSize, ...newPosition, vx: xSpeed, vy: ySpeed,
+      }, 0, dy)
+      if (collision) {
+        newPosition.y = collision.y
+        newPosition.x = collision.x
+        ySpeed = collision.vy
+        xSpeed = collision.vx
+      }
+    })
+
 
     // borderCollisions
     if (newPosition.y < 0) {

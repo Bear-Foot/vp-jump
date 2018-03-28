@@ -30,7 +30,7 @@ const levelFormat = {
   jumpForce: 1000,
   maxxSpeed: 400, // px/s
   horizontalAcceleration: 600, // px/s
-  gravityForce: 1500,
+  gravityForce: -1500,
   gameSpeed: 20,
 }
 

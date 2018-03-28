@@ -8,32 +8,24 @@ const rectangleOverlap = (r1, r2) => {
   return true
 }
 
-export const detectCollision = (block, player, vx, vy)
-  const collisions = []
-
+export const detectCollision = (block, player, dx, dy) => {
   if (rectangleOverlap(block, player)) {
     const newData = {
-      x: player.x,
-      y: player.y,
-      vx,
-      vy,
+      ...player,
     }
-    // https://gamedev.stackexchange.com/questions/30619/how-to-determine-collision-direction-between-two-rectangles
-    if (player.x > block.x && player.x < block.x + block.width) {
-      // if the player goes right, the collisition comes from the right side of the player box
-      collisions.push(vx > 0 ? 'right' : 'left')
-    }
-    if (player.y > block.y && player.y < block.y + block.height) {
-      collisions.push(vy > 0 ? 'top' : 'bottom')
-    }
-    if (collisions.length === 1) {
 
+    const xEdgePlayer = dx > 0 ? player.x + player.width : player.x
+    if (xEdgePlayer > block.x && xEdgePlayer < block.x + block.width) {
+      newData.vx = 0
+      newData.x = dx > 0 ? block.x - player.width : block.x + block.width
     }
-  }
-  return {
-    vx,
-    vy,
-    x,
-    y,
+
+    const yEdgePlayer = dy > 0 ? player.y + player.height : player.y
+    if (yEdgePlayer > block.y && yEdgePlayer < block.y + block.height) {
+      newData.vy = 0
+      newData.y = dy > 0 ? block.y - player.height : block.y + block.height + 1
+    }
+
+    return newData
   }
 }
