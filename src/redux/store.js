@@ -16,10 +16,15 @@ export const store = createStore(
 // x, y position for blocks start at the bottom left corner
 const levelFormat = {
   startPosition: { x: 0, y: 0 },
-  wrappingBox: { width: 800, height: 600 },
-  blocks: [{
-    width: 100, height: 100, x: 200, y: 200,
-  }],
+  wrappingBox: { width: 800, height: 700 },
+  blocks: [
+    {
+      width: 100, height: 100, x: 200, y: 200,
+    },
+    {
+      width: 100, height: 100, x: 500, y: 300,
+    },
+  ],
   finishPoint: {
     radius: 20,
     x: 900,

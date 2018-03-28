@@ -14,18 +14,31 @@ export const detectCollision = (block, player, dx, dy) => {
       ...player,
     }
 
-    const xEdgePlayer = dx > 0 ? player.x + player.width : player.x
-    if (xEdgePlayer > block.x && xEdgePlayer < block.x + block.width) {
-      newData.vx = 0
-      newData.x = dx > 0 ? block.x - player.width : block.x + block.width
-    }
+    const distX = dx > 0 ?
+      Math.abs((newData.x + newData.width) - block.x) :
+      Math.abs(newData.x - (block.x + block.width))
 
-    const yEdgePlayer = dy > 0 ? player.y + player.height : player.y
-    if (yEdgePlayer > block.y && yEdgePlayer < block.y + block.height) {
+    const distY = dy > 0 ?
+      Math.abs((newData.y + newData.height) - block.y) :
+      Math.abs(newData.y - (block.y + block.height))
+
+    const timeX = Math.abs(distX / dx)
+    const timeY = Math.abs(distY / dy)
+
+    if (timeX < timeY) {
+      if (dx > 0) {
+        newData.x = block.x - newData.width
+      } else {
+        newData.x = block.x + block.width
+      }
+    } else if (dy > 0) {
+      newData.y = block.y - newData.height
       newData.vy = 0
-      newData.y = dy > 0 ? block.y - player.height : block.y + block.height + 1
+    } else {
+      newData.y = block.y + block.height
+      newData.vy = 0
     }
-
     return newData
   }
+  return null
 }

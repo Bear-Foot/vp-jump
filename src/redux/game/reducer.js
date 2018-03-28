@@ -40,19 +40,6 @@ const actionHandlers = {
     const diff = ((now - state.lastUpdate) / 1000)
     let { xSpeed, ySpeed } = state
 
-    // blocks collisions
-    level.blocks.forEach((block) => {
-      const collision = detectCollision(block, {
-        ...level.avatarSize, ...newPosition, vx: xSpeed, vy: ySpeed,
-      }, dx, dy)
-      if (collision) {
-        newPosition.y = collision.y
-        newPosition.x = collision.x
-        ySpeed = collision.vy
-        xSpeed = collision.vx
-      }
-    })
-
     // X management
     const acceleration = level.horizontalAcceleration * diff
     if (state.goingLeft) {
@@ -78,33 +65,23 @@ const actionHandlers = {
 
     const dx = xSpeed * diff
     newPosition.x += dx
-    // blocks collisions
-    level.blocks.forEach((block) => {
-      const collision = detectCollision(block, {
-        ...level.avatarSize, ...newPosition, vx: xSpeed, vy: ySpeed,
-      }, dx, 0)
-      if (collision) {
-        newPosition.y = collision.y
-        newPosition.x = collision.x
-        ySpeed = collision.vy
-        xSpeed = collision.vx
-      }
-    })
+
 
     // Y ySpeed
     ySpeed += level.gravityForce * diff
     const dy = ySpeed * diff
     newPosition.y += dy
+
     // blocks collisions
     level.blocks.forEach((block) => {
       const collision = detectCollision(block, {
         ...level.avatarSize, ...newPosition, vx: xSpeed, vy: ySpeed,
-      }, 0, dy)
+      }, dx, dy)
       if (collision) {
         newPosition.y = collision.y
         newPosition.x = collision.x
-        ySpeed = collision.vy
         xSpeed = collision.vx
+        ySpeed = collision.vy
       }
     })
 
